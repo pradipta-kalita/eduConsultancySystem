@@ -31,6 +31,6 @@ public class ForgotPassword {
     private int attempts;
 
     @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
-
 }

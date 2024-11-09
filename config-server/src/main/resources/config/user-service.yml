@@ -30,6 +30,11 @@ security:
   enabled: true
 
 jwt:
-  secret: your_jwt_secret_key
+  secret: ZWR1Y29uc3VsdGFuY3lzeXN0ZW0gaXMgYSBwcm9qZWN0IGkgYW0gYnVpbGRpbmcgYXMgYW4gaW50ZXJuIGF0IGluZm9zeXMgc3ByaW5nYm9hcmQ=
   expiration: 3600000
   refresh-expiration: 604800000
+  forgot-expiration: 900000
+
+resend:
+  api-key: re_fgWQ8DLw_28pKziHpKst9ybLdwqPjQc1W
+  from-email: onboarding@resend.dev

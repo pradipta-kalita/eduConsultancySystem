@@ -13,7 +13,6 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class RefreshTokenService {
 
     private final UserRepository userRepository;
@@ -21,6 +20,11 @@ public class RefreshTokenService {
 
     @Value("${jwt.refresh-expiration}")
     private long refreshTokenExpiration;
+
+    public RefreshTokenService(UserRepository userRepository, RefreshTokenRepository refreshTokenRepository) {
+        this.userRepository = userRepository;
+        this.refreshTokenRepository = refreshTokenRepository;
+    }
 
     public RefreshToken createRefreshToken(String username){
         User user=userRepository.
