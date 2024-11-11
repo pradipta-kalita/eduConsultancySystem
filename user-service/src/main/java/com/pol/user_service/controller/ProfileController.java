@@ -9,19 +9,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/profile")
 public class ProfileController {
 
-    @PreAuthorize("hasAuthority('STUDENT')")
+
     @GetMapping("/student")
     public String studentOnlyRoute(){
         return "STUDENT ONLY ROUTE";
     }
 
-    @PreAuthorize("hasAuthority('PARENT')")
+
     @GetMapping("/parent")
     public String parentOnlyRoute(){
         return "PARENT ONLY ROUTE";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+
     @GetMapping("/admin")
     public String adminOnlyRoute(){
         return "ADMIN ONLY ROUTE";

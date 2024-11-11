@@ -12,10 +12,7 @@ import com.pol.user_service.auth.service.RefreshTokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -32,13 +29,16 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponseDTO> register(@RequestBody @Valid RegisterRequestDTO registerRequestDTO,
-                                                    HttpServletRequest request){
+                                                    HttpServletRequest request
+                                                   ){
         return ResponseEntity.ok(authService.register(registerRequestDTO));
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(@RequestBody @Valid LoginRequestDTO loginRequestDTO,
-                                                 HttpServletRequest request){
+                                                 HttpServletRequest request,
+                                                 @RequestHeader("gateway") String gateway){
+        System.out.println("IT SHOULD PRINT :"+gateway);
         return ResponseEntity.ok(authService.login(loginRequestDTO));
     }
 

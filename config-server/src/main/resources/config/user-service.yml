@@ -1,6 +1,5 @@
 server:
-  port:
-    8080
+  port: 8081
 
 eureka:
   client:
@@ -36,5 +35,5 @@ jwt:
   forgot-expiration: 900000
 
 resend:
-  api-key: re_fgWQ8DLw_28pKziHpKst9ybLdwqPjQc1W
+  key: re_fgWQ8DLw_28pKziHpKst9ybLdwqPjQc1W
   from-email: onboarding@resend.dev
