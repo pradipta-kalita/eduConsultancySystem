@@ -37,6 +37,12 @@ public class AuthService {
     private final ResendService resendService;
 
     public AuthResponseDTO register(RegisterRequestDTO registerRequestDTO){
+        if(userRepository.existsByEmail(registerRequestDTO.getEmail())){
+            throw new RuntimeException("User with email id "+registerRequestDTO.getEmail()+" already exists");
+        }
+        if(userRepository.existsByUsername(registerRequestDTO.getUsername())){
+            throw new RuntimeException("User with username "+registerRequestDTO.getUsername()+" already exists");
+        }
         UserRole defaultRole = userRoleService.getDefaultRoleUser();
         var user = User.builder()
                 .firstName(registerRequestDTO.getFirstName())

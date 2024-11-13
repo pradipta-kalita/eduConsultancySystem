@@ -17,4 +17,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @Query("SELECT new com.pol.user_service.dto.user.UserDetailsDTO(u.id, u.firstName, u.lastName, u.username, u.email) " +
             "FROM User u WHERE u.email = :email")
     Optional<UserDetailsDTO> getUserDetailsByEmail(@Param("email") String email);
+
+    boolean existsByEmail(String email);
+
+    boolean existsByUsername(String username);
 }

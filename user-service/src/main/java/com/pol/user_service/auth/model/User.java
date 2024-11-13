@@ -44,6 +44,7 @@ public class User implements UserDetails {
 
     @Email(message = "Email address is not valid.")
     @NotBlank(message = "Email is required")
+    @Column(unique = true)
     private String email;
 
     @JsonIgnore
