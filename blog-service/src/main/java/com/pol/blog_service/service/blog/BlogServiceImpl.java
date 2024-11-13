@@ -6,7 +6,7 @@ import com.pol.blog_service.dto.blog.BlogResponseDTO;
 import com.pol.blog_service.dto.blog.BlogSummaryDTO;
 import com.pol.blog_service.entity.Blog;
 import com.pol.blog_service.entity.BlogStatus;
-import com.pol.blog_service.exception.customExceptions.BlogNotFound;
+import com.pol.blog_service.exception.customExceptions.EntityNotFound;
 import com.pol.blog_service.mapper.BlogMapper;
 import com.pol.blog_service.repository.BlogRepository;
 import com.pol.blog_service.repository.TagsRepository;
@@ -19,9 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -45,7 +43,7 @@ public class BlogServiceImpl implements BlogService{
 
     @Override
     public BlogResponseDTO updateBlog(BlogRequestDTO blogRequestDTO,UUID id){
-        Blog blog = blogRepository.findById(id).orElseThrow(()->new BlogNotFound("Blog not found with id: "+id));
+        Blog blog = blogRepository.findById(id).orElseThrow(()->new EntityNotFound("Blog not found with id: "+id));
         blog.setTitle(blogRequestDTO.getTitle());
         blog.setContent(blogRequestDTO.getContent());
         blog.setStatus(blogRequestDTO.getStatus());
@@ -56,13 +54,13 @@ public class BlogServiceImpl implements BlogService{
 
     @Override
     public BlogResponseDTO getBlogById(UUID id){
-        Blog blog = blogRepository.findById(id).orElseThrow(()->new BlogNotFound("Blog not found with id: "+id));
+        Blog blog = blogRepository.findById(id).orElseThrow(()->new EntityNotFound("Blog not found with id: "+id));
         return BlogMapper.toResponseDTO(blog);
     }
 
     @Override
     public void deleteBlogById(UUID id){
-        Blog blog = blogRepository.findById(id).orElseThrow(()->new BlogNotFound("Blog not found with id: "+id));
+        Blog blog = blogRepository.findById(id).orElseThrow(()->new EntityNotFound("Blog not found with id: "+id));
         blogRepository.deleteById(id);
     }
 
@@ -74,16 +72,35 @@ public class BlogServiceImpl implements BlogService{
             sort= Sort.by(order.equalsIgnoreCase("asc")?Sort.Order.asc(sortFields[i]):Sort.Order.desc(sortFields[i]));
         }
         Pageable pageable = PageRequest.of(page,size,sort);
-        Page<Blog> blogs = blogRepository.findAll(pageable);
-        List<BlogSummaryDTO> blogResponseDTOS = blogs.getContent().stream().map(BlogMapper::toSummaryDTO).toList();
+        Page<BlogSummaryDTO> blogs = blogRepository.findAllBlogSummary(pageable);
         return BlogPageResponseDTO.builder()
-                .blogs(blogResponseDTOS)
+                .blogs(blogs.getContent())
                 .currentPage(blogs.getNumber())
                 .totalPages(blogs.getTotalPages())
                 .totalElements(blogs.getTotalElements())
                 .pageSize(blogs.getSize())
                 .hasNext(blogs.hasNext())
                 .hasPrevious(blogs.hasPrevious())
+                .build();
+    }
+
+    @Override
+    public BlogPageResponseDTO searchBlogsByKeyword(String keyword, int page, int size, String sortBy, String order) {
+        String[] sortFields = sortBy.split(",");
+        Sort sort = Sort.by(order.equalsIgnoreCase("asc")?Sort.Order.asc(sortFields[0]):Sort.Order.desc(sortFields[0]));
+        for(int i=1;i<sortFields.length;i++){
+            sort= Sort.by(order.equalsIgnoreCase("asc")?Sort.Order.asc(sortFields[i]):Sort.Order.desc(sortFields[i]));
+        }
+        Pageable pageable = PageRequest.of(page,size,sort);
+        Page<BlogSummaryDTO> blogSummaryDTOs = blogRepository.searchByKeyword(keyword,pageable);
+        return BlogPageResponseDTO.builder()
+                .blogs(blogSummaryDTOs.getContent())
+                .currentPage(blogSummaryDTOs.getNumber())
+                .totalPages(blogSummaryDTOs.getTotalPages())
+                .totalElements(blogSummaryDTOs.getTotalElements())
+                .pageSize(blogSummaryDTOs.getSize())
+                .hasNext(blogSummaryDTOs.hasNext())
+                .hasPrevious(blogSummaryDTOs.hasPrevious())
                 .build();
     }
 

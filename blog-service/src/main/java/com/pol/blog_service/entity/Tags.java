@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
@@ -23,6 +24,18 @@ public class Tags {
     @Column(name = "tag_name",nullable = false,unique = true)
     private String tagName;
 
+    @Column(unique = true,nullable = false)
+    private String slug ;
+
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     private Set<Blog> blogs;
+
+    @PrePersist
+    @PreUpdate
+    protected void generateSlug(){
+        if(this.tagName!=null){
+            this.tagName=this.tagName.strip();
+        }
+       this.slug= this.tagName!=null? this.tagName.toLowerCase(Locale.ROOT).strip():"";
+    }
 }

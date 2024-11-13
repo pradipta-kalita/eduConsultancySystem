@@ -37,3 +37,5 @@ jwt:
 resend:
   key: re_fgWQ8DLw_28pKziHpKst9ybLdwqPjQc1W
   from-email: onboarding@resend.dev
+
+

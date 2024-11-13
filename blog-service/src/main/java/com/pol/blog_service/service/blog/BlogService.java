@@ -12,4 +12,5 @@ public interface BlogService {
     BlogResponseDTO getBlogById(UUID id);
     void deleteBlogById(UUID id);
     BlogPageResponseDTO getAllBlogs(int page, int size, String sortBy, String order);
+    BlogPageResponseDTO searchBlogsByKeyword(String keyword,int page, int size, String sortBy, String order);
 }

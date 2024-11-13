@@ -27,11 +27,6 @@ public class BlogMapper {
     }
 
     public static BlogSummaryDTO toSummaryDTO(Blog blog){
-        return BlogSummaryDTO.builder()
-                .id(blog.getId())
-                .title(blog.getTitle())
-                .publishedAt(blog.getPublishedAt().toString())
-                .summary(blog.getSummary())
-                .build();
+        return new BlogSummaryDTO(blog.getId(),blog.getTitle(),blog.getPublishedAt(),blog.getSummary());
     }
 }

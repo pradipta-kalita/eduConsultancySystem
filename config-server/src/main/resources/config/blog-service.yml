@@ -26,3 +26,6 @@ spring:
   servlet:
     multipart:
       enabled: true
+
+
+

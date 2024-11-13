@@ -1,5 +1,6 @@
 package com.pol.blog_service.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -46,9 +47,11 @@ public class Blog {
     @Column(nullable = false)
     private BlogStatus status;
 
+    @JsonIgnore
     @Column(nullable = false,updatable = false)
     private LocalDateTime createdAt;
 
+    @JsonIgnore
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
