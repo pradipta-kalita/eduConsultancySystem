@@ -36,9 +36,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(@RequestBody @Valid LoginRequestDTO loginRequestDTO,
-                                                 HttpServletRequest request,
-                                                 @RequestHeader("gateway") String gateway){
-        System.out.println("IT SHOULD PRINT :"+gateway);
+                                                 HttpServletRequest request
+                                                 ){
         return ResponseEntity.ok(authService.login(loginRequestDTO));
     }
 
