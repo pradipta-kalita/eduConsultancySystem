@@ -1,7 +1,11 @@
 package com.pol.user_service.controller;
 
-import org.springframework.security.access.prepost.PreAuthorize;
+import com.pol.user_service.auth.model.User;
+import com.pol.user_service.dto.user.UserDetailsDTO;
+import com.pol.user_service.service.ProfileService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,26 +13,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/profile")
 public class ProfileController {
 
+    private final ProfileService profileService;
 
-    @GetMapping("/student")
-    public String studentOnlyRoute(){
-        return "STUDENT ONLY ROUTE";
-    }
-
-
-    @GetMapping("/parent")
-    public String parentOnlyRoute(){
-        return "PARENT ONLY ROUTE";
-    }
-
-
-    @GetMapping("/admin")
-    public String adminOnlyRoute(){
-        return "ADMIN ONLY ROUTE";
+    public ProfileController(ProfileService profileService) {
+        this.profileService = profileService;
     }
 
     @GetMapping
-    public String publicRoute(){
-        return "EVERYONE CAN VISIT";
+    public ResponseEntity<UserDetailsDTO> getUserDetails(
+            @RequestHeader("Authorization") String authHeader
+    ){
+        return ResponseEntity.ok(profileService.getUserDetails(authHeader));
     }
+
 }

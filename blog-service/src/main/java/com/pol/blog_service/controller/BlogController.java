@@ -60,6 +60,7 @@ public class BlogController {
         return ResponseEntity.ok(blogService.updateBlog(blogRequestDTO,id));
     }
 
+
     @DeleteMapping("{id}")
     public void deleteBlogById(@PathVariable UUID id){
         blogService.deleteBlogById(id);
